@@ -1,0 +1,7 @@
+use Test;
+
+plan 1;
+
+lives-ok { use Slang::Forgiven }, "`use`ing the module";
+
+done-testing;

@@ -1,0 +1,16 @@
+use Test;
+use Slang::Forgiven;
+
+plan 1;
+
+subtest "Parameterless forgiven" => {
+    dies-ok {
+        q:to/END/.EVAL;
+        forgiven [4, 5, 6] {
+            # Parameterless block is not forgiven; please use "for" instead
+        }
+        END
+    }
+}
+
+done-testing;

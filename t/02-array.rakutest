@@ -1,0 +1,53 @@
+use Test;
+use Slang::Forgiven;
+
+plan 4;
+
+subtest "Directly an array" => {
+    forgiven [[2, 3],] -> @arr {
+        is-deeply $_, @arr;
+    }
+}
+
+subtest "Destructuring (I): example with anonymous array" => {
+    # Per quadrant sums
+    my @coords = [(3, 5), (4, -2), (6, 7), (0, 9), (-1, -3), (0, 0), (-3, -1)];
+    my (&pos, &neg) = * > 0, * < 0;
+    my %quad-sums;
+
+    forgiven @coords -> @ [$x, $y] {
+        when &pos, &pos { %quad-sums<I>.push:    $x + $y }
+        when &neg, &pos { %quad-sums<II>.push:  -$x + $y }
+        when &neg, &neg { %quad-sums<III>.push: -$x - $y }
+        when &pos, &neg { %quad-sums<IV>.push:   $x - $y }
+        default         {  "$_.raku() is on an axis"  }
+    }
+
+    my %expected = (
+        I => [8, 13],
+        III => [4, 4],
+        IV => [6]
+    );
+    for %quad-sums -> (:key($quad), :value(@sum)) {
+        is-deeply @sum, %expected{$quad};
+    }
+}
+
+subtest "Destructuring (II): no explicit array" => {
+    forgiven [[3, 4, 5],] -> [$x is rw, $y is readonly, $z is rw] {
+        $_[0] = 27;
+        $_[*-1] = -1;
+        ok $x == 27;
+        ok $z == -1;
+    }
+}
+
+subtest "Destructuring (III): named array" => {
+    forgiven [[3, 4, 5],] -> @arr [$x, $y, $z] {
+        $_[0] = 27;
+        ok @arr[0] == 27;
+        nok $x == 27;        # $_ not connected to $x et al.
+    }
+}
+
+done-testing;

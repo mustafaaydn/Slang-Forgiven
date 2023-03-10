@@ -1,0 +1,22 @@
+use Test;
+use Slang::Forgiven;
+
+plan 2;
+
+subtest "Typed and optional parameters" => {
+    forgiven [[1, 2], [3, 4, 5]] -> [Int $a, Numeric $b, Int $d?] {
+        # not using `with` as it topicalizes too and we'd need $OUTER::_
+        $d.defined
+            ?? is-deeply $_, ($a, $b, $d)  # *not* an Array but a List
+            !! is-deeply $_, ($a, $b, Int);
+    }
+}
+
+subtest "Double destructuring" => {
+    forgiven [ [[3, 4],], [[[5, 6], 7]] ] -> @ [*@ [$first, **@rest]] {
+        is-deeply $_[0], $first;
+        is-deeply $_[1], @rest;
+    }
+}
+
+done-testing;

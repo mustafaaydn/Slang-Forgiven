@@ -1,0 +1,22 @@
+use Test;
+use Slang::Forgiven;
+
+plan 2;
+
+my @vals = [2, 0, 4, -5];
+
+subtest "Good old scalar" => {
+    forgiven @vals -> $num {
+        ok $_ =:= $num;
+        ok $_ == @vals[$++];
+    }
+}
+
+subtest "A read-writable scalar" => {
+    forgiven @vals <-> $rw-num {
+        ok $_ =:= $rw-num;
+        ok $_ =:= @vals[$++];
+    }
+}
+
+done-testing;

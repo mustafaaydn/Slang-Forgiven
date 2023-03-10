@@ -1,0 +1,21 @@
+use Test;
+use Slang::Forgiven;
+
+plan 2;
+
+my %h = (one => 1, two => 2, three => 3);
+
+subtest "Directly a hash" => {
+    forgiven %h -> %pair {
+        is-deeply $_, %pair;
+    }
+}
+
+subtest "Destructuring" => {
+    forgiven %h -> % (:$key, :$value) {
+        is-deeply $_[0], $key;
+        is-deeply $_[1], $value;
+    }
+}
+
+done-testing;
