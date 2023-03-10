@@ -1,10 +1,10 @@
 {
     "name": "Slang::Forgiven",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "When a for loop meets a given statement",
     "raku": "6.d",
     "provides": { "Slang::Forgiven": "lib/Slang/Forgiven.rakumod" },
     "auth": "zef:witawayar",
-    "source-url": "https://github.com/mustafaaydn/Forgiven",
+    "source-url": "https://github.com/mustafaaydn/Slang-Forgiven",
     "license": "Artistic-2.0"
 }
