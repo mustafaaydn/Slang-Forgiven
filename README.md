@@ -47,6 +47,5 @@ Grammar follows that of the "for" loop. Actions first gather the parameter names
 #### Installation
 Using [pakku](https://github.com/hythm7/Pakku):
 ```sh
-git clone https://github.com/mustafaaydn/Slang-Forgiven.git && cd "$(basename "$_" .git)"
-pakku add . && cd .. && rm -rf Slang-Forgiven
+pakku add Slang::Forgiven
 ```
